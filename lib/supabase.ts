@@ -9,5 +9,5 @@ export const createSupabaseClient = () => {
                 return ((await auth()).getToken());
             }
         }
-    )
+    );
 }

@@ -1,11 +1,17 @@
 import React from 'react'
 import { Book, Clock, TrendingUp } from 'lucide-react'
 import { Settings } from 'lucide-react'
+import { PlayCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-function CourseInfo({course}) {
+import { useState } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify';
+import Link from 'next/link'
+function CourseInfo({course,viewCourse}) {
     const courseLayout=course?.courseJson?.course;
     const [loading,setLoading]=useState(false);
+    const router=useRouter();
     const GenerateCourseContent= async ()=>{
 
         setLoading(true);
@@ -17,11 +23,14 @@ function CourseInfo({course}) {
         });
         console.log(result.data);
         setLoading(false);
+        router.replace('/workspace')
+        toast.success("Course Content Generated Successfully!");
     }
     catch(e)
     {
         console.log(e);
         setLoading(false);
+        toast.error("Server Side Error, Try Again!");
     }
     }
   return (
@@ -52,7 +61,7 @@ function CourseInfo({course}) {
                     </section>
                 </div>
             </div>
-            <Button className={'max-w-sm'}> <Settings/>Generate Content</Button>
+            {!viewCourse ? <Button className={'max-w-sm'} onClick={GenerateCourseContent} disabled={loading}> <Settings/>Generate Content</Button> : <Link href={'/course/'+course?.cid}><Button><PlayCircle/>Continue Learning</Button></Link>}
         </div>
     </div>
   )

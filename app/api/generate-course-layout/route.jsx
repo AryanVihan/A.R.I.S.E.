@@ -3,7 +3,8 @@ import {
   } from '@google/genai';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import {currentUser} from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
+import { createSupabaseClient } from "@/lib/supabase";
 
   const PROMPT=`Generate Learning Course depends on the following details. In which make sure to add course name, description, course banner image prompt (create a modern, flat-style 2D digital illustration representing user topic. include ui/ux elements such as mockup screens, text blocks, icons, buttons and creative workspace tools. add symbolic elements related to user course, like sticky notes, design components and visual aids. use a vibrant colour palette with a clean, professional look. the illustration should feel creative, tech savvy and educational, ideal for visualizing concepts in user course) for course banner in 3d format chapter name, topic under each chapters, duration for each chapter etc. in JSON format only.
   schema:
@@ -68,35 +69,45 @@ export async function POST(req){
     const ImagePrompt=JSONResp.course?.bannerImagePrompt;
 
     // Generate Banner Image
-    const bannerImageUrl= await GenerateImage(ImagePrompt);
-    // Save to Database
-    // const result=await db.insert(coursesTable).values({
-    //     ...formData,
-    //     courseJson:JSONResp,
-    //     userEmail:user?.primaryEmailAddress?.emailAddress,
-    //     cid:courseId,
-    //     bannerImageUrl:bannerImageUrl
-    // })
+    // const bannerImageUrl= await GenerateImage(ImagePrompt);
+    // Save to Database (Supabase)
+    const supabase = createSupabaseClient();
+    const { data, error } = await supabase
+        .from('courses')
+        .insert([
+            {
+                ...formData,
+                courseJson: JSONResp,
+                userEmail: user?.primaryEmailAddress?.emailAddress,
+                cid: courseId,
+                // bannerImageUrl: bannerImageUrl
+            }
+        ]);
 
-    return NextResponse.json({courseId:courseId});
+    if (error) {
+        console.error("Supabase Insert Error:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ courseId: courseId });
 }
   
-const GenerateImage=async(imagePrompt)=>{
-  const BASE_URL='https://aigurulab.tech';
-const result = await axios.post(BASE_URL+'/api/generate-image',
-        {
-            width: 1024,
-            height: 1024,
-            input: imagePrompt,
-            model: 'flux',//'flux'
-            aspectRatio:"16:9"//Applicable to Flux model only
-        },
-        {
-            headers: {
-                'x-api-key': process?.env?.AI_GURU_LAB_API, // Your API Key
-                'Content-Type': 'application/json', // Content Type
-            },
-        })
-console.log(result.data.image) //Output Result: Base 64 Image
-return result.data.image;
-}
+// const GenerateImage=async(imagePrompt)=>{
+//   const BASE_URL='https://aigurulab.tech';
+// const result = await axios.post(BASE_URL+'/api/generate-image',
+//         {
+//             width: 1024,
+//             height: 1024,
+//             input: imagePrompt,
+//             model: 'flux',//'flux'
+//             aspectRatio:"16:9"//Applicable to Flux model only
+//         },
+//         {
+//             headers: {
+//                 'x-api-key': process?.env?.AI_GURU_LAB_API, // Your API Key
+//                 'Content-Type': 'application/json', // Content Type
+//             },
+//         })
+// console.log(result.data.image) //Output Result: Base 64 Image
+// return result.data.image;
+// }

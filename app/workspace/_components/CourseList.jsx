@@ -2,8 +2,22 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import AddNewCourseDialog from './AddNewCourseDialog'
+import axios from 'axios'
+import { useUser } from '@clerk/nextjs'
+import { useEffect } from 'react'
+import CourseCard from './CourseCard'
+
 function CourseList() {
     const [courseList,setCourseList]=useState([]);
+    const {user}=useUser();
+    useEffect(()=>{
+      user &&GetCourseList();
+    },[user])
+    const GetCourseList=async()=>{
+      const result=await axios.get('/api/courses');
+      console.log(result.data);
+      setCourseList(result.data);
+    }
   return (
     <div className='mt-10 items-center'>
         <h2 className='text-2xl font-bold'>Course List</h2>
@@ -13,8 +27,10 @@ function CourseList() {
             <Button>+ Create your first course</Button>
             </AddNewCourseDialog>
         </div> :
-        <div>
-            List of Courses
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
+            {courseList?.map((course,index)=>{
+             return <CourseCard course={course} key={index}/>
+            })}
         </div> }
     </div>
   )

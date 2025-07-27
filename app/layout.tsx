@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { neobrutalism } from "@clerk/themes";
+import { Toaster } from "@/components/ui/sonner";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -28,6 +29,7 @@ export default function RootLayout({
       }}>
           <Navbar />
           {children}
+          <Toaster />
         </ClerkProvider>
       </body>
     </html>
