@@ -1,0 +1,189 @@
+/* Enrolled Courses Section Styling */
+.enrolled-courses-section {
+  margin-top: 3rem;
+  position: relative;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header Section */
+.enrolled-courses-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.enrolled-courses-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, 
+    #ffffff 0%, 
+    #f0f9ff 25%, 
+    #e0f2fe 50%, 
+    #bae6fd 75%, 
+    #7dd3fc 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  position: relative;
+  text-shadow: 0 4px 20px rgba(125, 211, 252, 0.3);
+  animation: gradientShift 3s ease-in-out infinite alternate;
+  margin-bottom: 1rem;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.enrolled-courses-accent {
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #60a5fa 20%, 
+    #3b82f6 40%, 
+    #1d4ed8 60%, 
+    #1e40af 80%, 
+    transparent 100%
+  );
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.enrolled-courses-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.6) 50%, 
+    transparent 100%
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Grid Section */
+.enrolled-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  position: relative;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .enrolled-courses-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .enrolled-courses-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .enrolled-courses-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Additional animation delays for staggered effect */
+.enrolled-courses-grid > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.enrolled-courses-grid > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.enrolled-courses-grid > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.enrolled-courses-grid > *:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.enrolled-courses-grid > *:nth-child(n+5) {
+  animation-delay: 0.5s;
+}
+
+/* Background effects */
+.enrolled-courses-section::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, 
+    rgba(59, 130, 246, 0.1) 0%, 
+    rgba(147, 197, 253, 0.05) 40%, 
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes float {
+  0% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  .enrolled-courses-title {
+    font-size: 2rem;
+  }
+  
+  .enrolled-courses-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .enrolled-courses-section {
+    margin-top: 2rem;
+  }
+}

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import EnrollCourseCard from './EnrollCourseCard'
+import './EnrollCourseList.css'
 function EnrollCourseList() {
     const [enrolledCourseList,setEnrolledCourseList]=useState([]);
 
@@ -14,9 +15,12 @@ function EnrollCourseList() {
         setEnrolledCourseList(result.data);
     }
   return enrolledCourseList?.length > 0 && (
-    <div className='mt-10 items-center'>
-        <h2 className='text-2xl font-bold'>Enrolled Courses</h2>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
+    <div className='enrolled-courses-section'>
+        <div className='enrolled-courses-header'>
+            <h2 className='enrolled-courses-title'>Enrolled Courses</h2>
+            <div className='enrolled-courses-accent'></div>
+        </div>
+        <div className='enrolled-courses-grid'>
             {enrolledCourseList?.map((course,index)=>{
              return <EnrollCourseCard course={course?.courses} enrollCourse={course?.enrollCourse} key={index}/>
             })}

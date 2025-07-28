@@ -15,6 +15,10 @@ export async function GET(req) {
         .single();
 
     if (error) {
+        console.error('Supabase error in courses API:', error);
+        if (error.code === 'PGRST301') {
+            return NextResponse.json({ error: 'Authentication session expired. Please sign in again.' }, { status: 401 });
+        }
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
@@ -26,9 +30,13 @@ else{
         .from('courses')
         .select('*')
         .eq('userEmail',user?.primaryEmailAddress?.emailAddress)
-        .order('createdAt','desc');
+        .order('created_at','desc');
 
     if (error) {
+        console.error('Supabase error in courses API:', error);
+        if (error.code === 'PGRST301') {
+            return NextResponse.json({ error: 'Authentication session expired. Please sign in again.' }, { status: 401 });
+        }
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 

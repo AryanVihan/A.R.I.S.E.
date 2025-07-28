@@ -20,67 +20,108 @@ interface CompanionsListProps {
 
 const CompanionsList = ({ title, companions, classNames }: CompanionsListProps) => {
     return (
-        <article className={cn('companion-list', classNames)}>
-            <h2 className="font-bold text-3xl">{title}</h2>
+        <article className={cn('modern-companion-list', classNames)}>
+            {/* Header */}
+            <div className="list-header">
+                <h2 className="list-title">
+                    <span className="title-gradient">{title}</span>
+                </h2>
+                <div className="list-subtitle">
+                    Continue your learning journey
+                </div>
+            </div>
 
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="text-lg w-2/3">Lessons</TableHead>
-                        <TableHead className="text-lg">Subject</TableHead>
-                        <TableHead className="text-lg text-right">Duration</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {companions?.map(({id, subject, name, topic, duration}) => (
-                        <TableRow key={id}>
-                            <TableCell>
-                                <Link href={`/companions/${id}`}>
-                                    <div className="flex items-center gap-2">
-                                        <div className="size-[72px] flex items-center justify-center rounded-lg max-md:hidden" style={{ backgroundColor: getSubjectColor(subject) }}>
+            {/* Modern Card Layout */}
+            <div className="companions-cards">
+                {companions?.length === 0 ? (
+                    <div className="empty-state">
+                        <div className="empty-icon">
+                            📚
+                        </div>
+                        <h3 className="empty-title">No Recent Sessions</h3>
+                        <p className="empty-description">
+                            Start your first lesson to see your progress here
+                        </p>
+                    </div>
+                ) : (
+                    companions?.map(({id, subject, name, topic, duration}, index) => (
+                        <Link href={`/companions/${id}`} key={id}>
+                            <div 
+                                className="companion-list-card"
+                                style={{ animationDelay: `${index * 0.1}s` }}
+                            >
+                                {/* Card background */}
+                                <div className="list-card-bg"></div>
+                                
+                                {/* Content */}
+                                <div className="list-card-content">
+                                    {/* Icon */}
+                                    <div 
+                                        className="list-card-icon"
+                                        style={{ backgroundColor: `${getSubjectColor(subject)}20` }}
+                                    >
+                                        <div 
+                                            className="icon-inner"
+                                            style={{ backgroundColor: getSubjectColor(subject) }}
+                                        >
                                             <Image
                                                 src={`/icons/${subject}.svg`}
                                                 alt={subject}
-                                                width={35}
-                                                height={35} />
-                                        </div>
-                                        <div className="flex flex-col gap-2">
-                                            <p className="font-bold text-2xl">
-                                                {name}
-                                            </p>
-                                            <p className="text-lg">
-                                                {topic}
-                                            </p>
+                                                width={24}
+                                                height={24}
+                                                className="subject-icon"
+                                            />
                                         </div>
                                     </div>
-                                </Link>
-                            </TableCell>
-                            <TableCell>
-                                <div className="subject-badge w-fit max-md:hidden">
-                                    {subject}
+                                    
+                                    {/* Text content */}
+                                    <div className="list-card-text">
+                                        <h3 className="card-lesson-name">{name}</h3>
+                                        <p className="card-lesson-topic">{topic}</p>
+                                        
+                                        {/* Meta info */}
+                                        <div className="card-meta">
+                                            <div className="meta-item">
+                                                <div className="meta-badge" style={{ backgroundColor: getSubjectColor(subject) }}>
+                                                    {subject}
+                                                </div>
+                                            </div>
+                                            <div className="meta-item duration">
+                                                <div className="duration-badge">
+                                                    <Image 
+                                                        src="/icons/clock.svg" 
+                                                        alt="duration" 
+                                                        width={12} 
+                                                        height={12} 
+                                                        className="duration-icon"
+                                                    />
+                                                    <span>{duration}m</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Action arrow */}
+                                    <div className="list-card-arrow">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                            <path 
+                                                d="M9 18l6-6-6-6" 
+                                                stroke="currentColor" 
+                                                strokeWidth="2" 
+                                                strokeLinecap="round" 
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
                                 </div>
-                                <div className="flex items-center justify-center rounded-lg w-fit p-2 md:hidden" style={{backgroundColor: getSubjectColor(subject)}}>
-                            <Image
-                                src={`/icons/${subject}.svg`}
-                                alt={subject}
-                                width={18}
-                                height={18}
-                            />
-                                </div>
-                            </TableCell>
-                            <TableCell>
-                                <div className="flex items-center gap-2 w-full justify-end">
-                                    <p className="text-2xl">
-                                        {duration} {' '}
-                                        <span className="max-md:hidden">mins</span>
-                                    </p>
-                                    <Image src="/icons/clock.svg" alt="minutes" width={14} height={14} className="md:hidden" />
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                                
+                                {/* Hover effect */}
+                                <div className="list-card-hover"></div>
+                            </div>
+                        </Link>
+                    ))
+                )}
+            </div>
         </article>
     )
 }

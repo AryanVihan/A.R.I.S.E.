@@ -33,38 +33,85 @@ const CompanionCard = ({
     }
   };
   return (
-    <article className="companion-card" style={{ backgroundColor: color }}>
-      <div className="flex justify-between items-center">
-        <div className="subject-badge">{subject}</div>
-        <button className="companion-bookmark" onClick={handleBookmark}>
-          <Image
-            src={
-              bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"
-            }
-            alt="bookmark"
-            width={12.5}
-            height={15}
-          />
-        </button>
-      </div>
-{/* using those variables */}
-      <h2 className="text-2xl font-bold">{name}</h2>
-      <p className="text-sm">{topic}</p>
-      <div className="flex items-center gap-2">
-        <Image
-          src="/icons/clock.svg"
-          alt="duration"
-          width={13.5}
-          height={13.5}
-        />
-        <p className="text-sm">{duration} minutes</p>
-      </div>
+    <article className="modern-companion-card group">
+      {/* Background gradient overlay */}
+      <div 
+        className="card-background"
+        style={{ 
+          background: `linear-gradient(135deg, ${color}15 0%, ${color}25 100%)` 
+        }}
+      ></div>
+      
+      {/* Card content */}
+      <div className="card-content">
+        {/* Header with subject and bookmark */}
+        <div className="card-header">
+          <div className="modern-subject-badge" style={{ backgroundColor: color }}>
+            <span className="badge-text">{subject}</span>
+            <div className="badge-shine"></div>
+          </div>
+          <button 
+            className="modern-bookmark-btn group" 
+            onClick={handleBookmark}
+          >
+            <div className="bookmark-bg"></div>
+            <Image
+              src={
+                bookmarked ? "/icons/bookmark-filled.svg" : "/icons/bookmark.svg"
+              }
+              alt="bookmark"
+              width={16}
+              height={20}
+              className="bookmark-icon"
+            />
+          </button>
+        </div>
 
-      <Link href={`/companions/${id}`} className="w-full">
-        <button className="btn-primary w-full justify-center">
-          Launch Lesson
-        </button>
-      </Link>
+        {/* Main content */}
+        <div className="card-main">
+          <h2 className="companion-name">{name}</h2>
+          <p className="companion-topic">{topic}</p>
+          
+          {/* Duration with modern styling */}
+          <div className="duration-container">
+            <div className="duration-icon">
+              <Image
+                src="/icons/clock.svg"
+                alt="duration"
+                width={16}
+                height={16}
+                className="clock-icon"
+              />
+            </div>
+            <span className="duration-text">{duration} minutes</span>
+            <div className="duration-pulse"></div>
+          </div>
+        </div>
+
+        {/* Action button */}
+        <Link href={`/companions/${id}`} className="w-full">
+          <button className="modern-launch-btn">
+            <span className="btn-content">
+              <span className="btn-text">Launch Lesson</span>
+              <div className="btn-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path 
+                    d="M13 7l5 5-5 5M6 12h12" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </span>
+            <div className="btn-shine"></div>
+          </button>
+        </Link>
+      </div>
+      
+      {/* Hover effects */}
+      <div className="card-glow" style={{ backgroundColor: color }}></div>
     </article>
   );
 };
